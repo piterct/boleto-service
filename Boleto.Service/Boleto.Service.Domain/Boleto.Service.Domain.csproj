@@ -7,11 +7,13 @@
   <ItemGroup>
     <Folder Include="Commands\Output\" />
     <Folder Include="Services\" />
+    <Folder Include="Handlers\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Flunt" Version="1.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

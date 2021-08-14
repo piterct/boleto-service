@@ -1,4 +1,4 @@
-﻿using Boleto.Service.Domain.Entities;
+﻿using Boleto.Service.Domain.Handlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
