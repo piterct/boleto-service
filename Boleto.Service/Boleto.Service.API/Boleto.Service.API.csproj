@@ -4,5 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Boleto.Service.Domain\Boleto.Service.Domain.csproj" />
+  </ItemGroup>
+
 
 </Project>
