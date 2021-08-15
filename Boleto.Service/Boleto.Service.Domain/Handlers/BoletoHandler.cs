@@ -1,4 +1,5 @@
 ﻿using Boleto.Service.Domain.Commands.Input;
+using Boleto.Service.Domain.Commands.Output;
 using Boleto.Service.Domain.Commands.Result;
 using Boleto.Service.Domain.Entity;
 using Microsoft.AspNetCore.Http;
@@ -16,9 +17,8 @@ namespace Boleto.Service.Domain.Handlers
 
             var boleto = new BoletoBancario(command.LinhaDigitavel);
 
-           var codigoBarras = boleto.CalculaCodigoBarras();
-
-            return new ValidaLinhaDigitavelBoletoCommandResult(true, "Success!", null, StatusCodes.Status200OK, command.Notifications);
+            return new ValidaLinhaDigitavelBoletoCommandResult(true, "Success!", new ValidaLinhaDigitavelBoletoCommandOutput { CodigoBarras = boleto.CalculaCodigoBarras() },
+                StatusCodes.Status200OK, command.Notifications);
         }
     }
 }

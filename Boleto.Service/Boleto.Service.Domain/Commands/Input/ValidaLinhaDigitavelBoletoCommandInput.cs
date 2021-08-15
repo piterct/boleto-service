@@ -1,6 +1,7 @@
 ﻿using Flunt.Notifications;
 using Flunt.Validations;
 using System;
+using System.Text.RegularExpressions;
 
 namespace Boleto.Service.Domain.Commands.Input
 {
@@ -16,6 +17,8 @@ namespace Boleto.Service.Domain.Commands.Input
            new Contract()
                .Requires()
                .IsNotNullOrEmpty(LinhaDigitavel, "LinhaDigitavel", "LinhaDigitavel obrigatório!")
+                .IsGreaterThan(LinhaDigitavel.Length, 36, "LinhaDigitavel", "Tamanho mínimo 36 caracteres!")
+                .IsLowerThan(Regex.Match(this.LinhaDigitavel, @"\d+").Value.Length, 48, "LinhaDigitavel", "Tamanho máximo 47 caracteres!")
                 );
         }
     }

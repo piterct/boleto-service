@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Output\" />
     <Folder Include="Services\" />
     <Folder Include="Handlers\" />
     <Folder Include="Repositories\" />
