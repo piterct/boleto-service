@@ -23,7 +23,7 @@ namespace Boleto.Service.Domain.Handlers
             if (command.Invalid)
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
-            var boletoBancario = new BoletoBancario(command.LinhaDigitavel, string.Empty,
+            var boletoBancario = new BoletoBancario(command.LinhaDigitavel.Replace(" ",""), string.Empty,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
             string codigoBarras = await boletoBancario.CalculaCodigoBarras();
 
@@ -32,7 +32,7 @@ namespace Boleto.Service.Domain.Handlers
                StatusCodes.Status400BadRequest, command.Notifications);         
 
             return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput { CodigoBarras = codigoBarras,
-                DataVencimento = boletoBancario.DataVencimento() },
+                DataVencimento = boletoBancario.DataVencimento(), Valor = boletoBancario.ValorBoleto() },
                 StatusCodes.Status200OK, command.Notifications);
         }
     }

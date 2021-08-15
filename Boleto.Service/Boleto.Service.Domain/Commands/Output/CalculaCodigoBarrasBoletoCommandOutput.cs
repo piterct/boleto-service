@@ -8,5 +8,6 @@ namespace Boleto.Service.Domain.Commands.Output
     {
         public string CodigoBarras { get; set; }
         public DateTime DataVencimento { get; set; }
+        public decimal Valor { get; set; }
     }
 }

@@ -45,6 +45,13 @@ namespace Boleto.Service.Domain.Entity
             return this.DataBaseBacen.AddDays(Convert.ToInt32(this.CodigoBarras.Substring(5, 4)));
         }
 
+        public decimal ValorBoleto()
+        {
+            string valor = this.CodigoBarras.Substring(9, 8) + ',' + this.CodigoBarras.Substring(17, 2);
+
+            return Convert.ToDecimal(valor);
+        }
+
         private void TamanhoCodigoBarras()
         {
             if (this.CodigoBarras.Length < 47)
