@@ -15,9 +15,14 @@ namespace Boleto.Service.Domain.Handlers
             if (command.Invalid)
                 return new ValidaLinhaDigitavelBoletoCommandResult(false, "Incorrect  data!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
-            var boleto = new BoletoBancario(command.LinhaDigitavel);
+            var boletoBancario = new BoletoBancario(command.LinhaDigitavel);
+            boletoBancario.CalculaCodigoBarras();
 
-            return new ValidaLinhaDigitavelBoletoCommandResult(true, "Success!", new ValidaLinhaDigitavelBoletoCommandOutput { CodigoBarras = boleto.CalculaCodigoBarras() },
+            if (!boletoBancario.ValidaDigitoCodigodeBarras())
+                return new ValidaLinhaDigitavelBoletoCommandResult(false, "Digito verificador inválido!", null,
+               StatusCodes.Status400BadRequest, command.Notifications);
+
+            return new ValidaLinhaDigitavelBoletoCommandResult(true, "Sucesso!", new ValidaLinhaDigitavelBoletoCommandOutput { CodigoBarras = boletoBancario.CalculaCodigoBarras() },
                 StatusCodes.Status200OK, command.Notifications);
         }
     }
