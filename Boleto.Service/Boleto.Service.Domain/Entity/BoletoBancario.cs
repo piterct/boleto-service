@@ -6,11 +6,12 @@ namespace Boleto.Service.Domain.Entity
 {
     public class BoletoBancario
     {
-        public BoletoBancario(string linhaDigitavel)
+        public BoletoBancario(string linhaDigitavel, string codigoBarras)
         {
             LinhaDigitavel = linhaDigitavel;
+            CodigoBarras = codigoBarras;
         }
-
+      
         public string LinhaDigitavel { get; private set; }
         public string CodigoBarras { get; private set; }
 

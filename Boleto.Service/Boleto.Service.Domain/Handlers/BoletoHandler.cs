@@ -15,7 +15,7 @@ namespace Boleto.Service.Domain.Handlers
             if (command.Invalid)
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
-            var boletoBancario = new BoletoBancario(command.LinhaDigitavel);
+            var boletoBancario = new BoletoBancario(command.LinhaDigitavel, string.Empty);
             await boletoBancario.CalculaCodigoBarras();
 
             if (!boletoBancario.ValidaDigitoCodigodeBarras())
