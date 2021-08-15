@@ -6,14 +6,16 @@ namespace Boleto.Service.Domain.Entity
 {
     public class BoletoBancario
     {
-        public BoletoBancario(string linhaDigitavel, string codigoBarras)
+        public BoletoBancario(string linhaDigitavel, string codigoBarras, DateTime dataBaseBacen)
         {
             LinhaDigitavel = linhaDigitavel;
             CodigoBarras = codigoBarras;
+            DataBaseBacen = dataBaseBacen;
         }
-      
+
         public string LinhaDigitavel { get; private set; }
         public string CodigoBarras { get; private set; }
+        public DateTime DataBaseBacen { get; set; }
 
         public async ValueTask<string> CalculaCodigoBarras()
         {
@@ -38,9 +40,9 @@ namespace Boleto.Service.Domain.Entity
             return await Task.FromResult(true); ;
         }
 
-        public DateTime CalculaDataVencimento()
+        public DateTime DataVencimento()
         {
-            return DateTime.Now;
+            return this.DataBaseBacen.AddDays(Convert.ToInt32(this.CodigoBarras.Substring(5, 4)));
         }
 
         private void TamanhoCodigoBarras()

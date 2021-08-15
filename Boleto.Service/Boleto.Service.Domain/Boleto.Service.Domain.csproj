@@ -13,6 +13,11 @@
   <ItemGroup>
     <PackageReference Include="Flunt" Version="1.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Boleto.Service.Shared\Boleto.Service.Shared.csproj" />
   </ItemGroup>
 
 </Project>

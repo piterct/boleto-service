@@ -2,9 +2,9 @@
 {
     public class ProjectSettings
     {
-        public DataBaseBacen DataBaseBacen { get; set; }
+        public DataBaseBacenSettings DataBaseBacenSettings { get; set; }
     }
-    public class DataBaseBacen
+    public class DataBaseBacenSettings
     {
         public string Dia { get; set; }
         public string Mes { get; set; }
