@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Boleto.Service.Domain.Commands.Result
 {
-    public class ValidaLinhaDigitavelBoletoCommandResult
+    public class CalculaCodigoBarrasBoletoCommandResult
     {
-        public ValidaLinhaDigitavelBoletoCommandResult(bool success, string message, ValidaLinhaDigitavelBoletoCommandOutput data, int statusCode, IEnumerable<Notification> notifications)
+        public CalculaCodigoBarrasBoletoCommandResult(bool success, string message, CalculaCodigoBarrasBoletoCommandOutput data, int statusCode, IEnumerable<Notification> notifications)
         {
             Success = success;
             Message = message;
@@ -17,7 +17,7 @@ namespace Boleto.Service.Domain.Commands.Result
 
         public bool Success { get; set; }
         public string Message { get; set; }
-        public ValidaLinhaDigitavelBoletoCommandOutput Data { get; set; }
+        public CalculaCodigoBarrasBoletoCommandOutput Data { get; set; }
         public int StatusCode { get; set; }
         public IEnumerable<Notification> Notifications { get; set; }
     }

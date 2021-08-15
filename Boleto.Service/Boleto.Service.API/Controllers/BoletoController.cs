@@ -24,8 +24,8 @@ namespace Boleto.Service.API.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("calculaCodigoDeBarras")]
-        [ProducesResponseType(typeof(ValidaLinhaDigitavelBoletoCommandResult), StatusCodes.Status200OK)]
-        public async ValueTask<IActionResult> CalculaCodigoDeBarras([FromServices] BoletoHandler handler, [FromBody] ValidaLinhaDigitavelBoletoCommandInput command)
+        [ProducesResponseType(typeof(CalculaCodigoBarrasBoletoCommandResult), StatusCodes.Status200OK)]
+        public async ValueTask<IActionResult> CalculaCodigoDeBarras([FromServices] BoletoHandler handler, [FromBody] CalculaCodigoBarrasBoletoCommandInput command)
         {
             try
             {

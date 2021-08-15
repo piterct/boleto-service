@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Boleto.Service.Domain.Entity
 {
@@ -11,9 +12,9 @@ namespace Boleto.Service.Domain.Entity
         }
 
         public string LinhaDigitavel { get; private set; }
-        public string CodigoBarras { get; set; }
+        public string CodigoBarras { get; private set; }
 
-        public string CalculaCodigoBarras()
+        public async ValueTask<string> CalculaCodigoBarras()
         {
             this.CodigoBarras = Regex.Match(this.LinhaDigitavel, @"\d+").Value;
 
@@ -25,7 +26,7 @@ namespace Boleto.Service.Domain.Entity
                 + this.CodigoBarras.Substring(10, 10)
                 + this.CodigoBarras.Substring(21, 10);
 
-            return CodigoBarras;
+            return await Task.FromResult(CodigoBarras);
         }
 
         public bool ValidaDigitoCodigodeBarras()
@@ -78,8 +79,6 @@ namespace Boleto.Service.Domain.Entity
 
             return digito;
         }
-
-
 
     }
 }

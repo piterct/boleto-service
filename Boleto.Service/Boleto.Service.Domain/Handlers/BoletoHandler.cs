@@ -9,20 +9,20 @@ namespace Boleto.Service.Domain.Handlers
 {
     public class BoletoHandler
     {
-        public async ValueTask<ValidaLinhaDigitavelBoletoCommandResult> Handle(ValidaLinhaDigitavelBoletoCommandInput command)
+        public async ValueTask<CalculaCodigoBarrasBoletoCommandResult> Handle(CalculaCodigoBarrasBoletoCommandInput command)
         {
             command.Validate();
             if (command.Invalid)
-                return new ValidaLinhaDigitavelBoletoCommandResult(false, "Incorrect  data!", null, StatusCodes.Status400BadRequest, command.Notifications);
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
             var boletoBancario = new BoletoBancario(command.LinhaDigitavel);
-            boletoBancario.CalculaCodigoBarras();
+            await boletoBancario.CalculaCodigoBarras();
 
             if (!boletoBancario.ValidaDigitoCodigodeBarras())
-                return new ValidaLinhaDigitavelBoletoCommandResult(false, "Digito verificador inválido!", null,
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito verificador inválido!", null,
                StatusCodes.Status400BadRequest, command.Notifications);
 
-            return new ValidaLinhaDigitavelBoletoCommandResult(true, "Sucesso!", new ValidaLinhaDigitavelBoletoCommandOutput { CodigoBarras = boletoBancario.CalculaCodigoBarras() },
+            return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput { CodigoBarras = await boletoBancario.CalculaCodigoBarras() },
                 StatusCodes.Status200OK, command.Notifications);
         }
     }

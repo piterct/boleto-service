@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Boleto.Service.Domain.Commands.Input
 {
-    public class ValidaLinhaDigitavelBoletoCommandInput : Notifiable
+    public class CalculaCodigoBarrasBoletoCommandInput : Notifiable
     {
         public string LinhaDigitavel { get; set; }
         public decimal Valor { get; set; }

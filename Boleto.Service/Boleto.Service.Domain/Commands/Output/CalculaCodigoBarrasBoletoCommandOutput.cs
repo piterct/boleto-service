@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Boleto.Service.Domain.Commands.Output
 {
-    public class ValidaLinhaDigitavelBoletoCommandOutput
+    public class CalculaCodigoBarrasBoletoCommandOutput
     {
         public string CodigoBarras { get; set; }
     }

@@ -6,6 +6,6 @@ namespace Boleto.Service.API.Controllers
     public class BaseController : Controller
     {
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult GetResult(ValidaLinhaDigitavelBoletoCommandResult result) => StatusCode(result.StatusCode, result);
+        public IActionResult GetResult(CalculaCodigoBarrasBoletoCommandResult result) => StatusCode(result.StatusCode, result);
     }
 }
