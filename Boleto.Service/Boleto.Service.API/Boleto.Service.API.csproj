@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Boleto.Service.Domain\Boleto.Service.Domain.csproj" />
+    <ProjectReference Include="..\Boleto.Service.Shared\Boleto.Service.Shared.csproj" />
   </ItemGroup>
 
 

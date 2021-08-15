@@ -30,12 +30,17 @@ namespace Boleto.Service.Domain.Entity
             return await Task.FromResult(CodigoBarras);
         }
 
-        public bool ValidaDigitoCodigodeBarras()
+        public async ValueTask<bool> ValidaDigitoCodigodeBarras()
         {
             if (CalculaDigitoVerificador(this.CodigoBarras.Substring(0, 4) + this.CodigoBarras.Substring(5, 39)) != Convert.ToInt32(this.CodigoBarras.Substring(4, 1)))
-                return false;
+                return await Task.FromResult(false);
 
-            return true;
+            return await Task.FromResult(true); ;
+        }
+
+        public DateTime CalculaDataVencimento()
+        {
+            return DateTime.Now;
         }
 
         private void TamanhoCodigoBarras()

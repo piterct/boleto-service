@@ -1,4 +1,5 @@
 using Boleto.Service.API.DependencyInjectionConfig;
+using Boleto.Service.Shared.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +38,8 @@ namespace Boleto.Service.API
                     Title = "Boleto"
                 });
             });
+
+            services.Configure<ProjectSettings>(Configuration.GetSection("ProjectSettings"));
 
             ConfigureDI(services, Configuration);
 
