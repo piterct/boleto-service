@@ -39,6 +39,22 @@ namespace Boleto.Service.Tests.Entity
 
 
         [TestMethod]
+        public void Data_Vencimento_Boleto_Invalida()
+        {
+            string linhaDigitavelValida = "03399699255870000180185108001018874650000010000";
+
+            DateTime dataVencimentoValida = new DateTime(2019, 03, 16);
+
+            var boletoBancario = new BoletoBancario(linhaDigitavelValida, string.Empty, _dataBaseBacen);
+
+            var codigoBarras = boletoBancario.CalculaCodigoBarras().Result;
+
+            DateTime dataVencimentoBoleto = boletoBancario.DataVencimento();
+
+            Assert.AreNotEqual(dataVencimentoValida, dataVencimentoBoleto, "Data vencimento boleto inválida!");
+        }
+
+        [TestMethod]
         public void Data_Vencimento_Boleto_Valida()
         {
             string linhaDigitavelValida = "03399699255870000180185108001018874650000010000";
@@ -53,5 +69,7 @@ namespace Boleto.Service.Tests.Entity
 
             Assert.AreEqual(dataVencimentoValida, dataVencimentoBoleto, "Data vencimento boleto valida!");
         }
+
+  
     }
 }
