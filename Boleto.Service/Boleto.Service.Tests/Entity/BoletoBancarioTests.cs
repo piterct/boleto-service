@@ -36,5 +36,22 @@ namespace Boleto.Service.Tests.Entity
 
             Assert.AreEqual(boletoBancario.ValidaDigitoCodigodeBarras().Result, true, "Linha digitavel valida!");
         }
+
+
+        [TestMethod]
+        public void Data_Vencimento_Boleto_Valida()
+        {
+            string linhaDigitavelValida = "03399699255870000180185108001018874650000010000";
+
+            DateTime dataVencimentoValida = new DateTime(2018, 03, 16);
+
+            var boletoBancario = new BoletoBancario(linhaDigitavelValida, string.Empty, _dataBaseBacen);
+
+            var codigoBarras = boletoBancario.CalculaCodigoBarras().Result;
+
+            DateTime dataVencimentoBoleto = boletoBancario.DataVencimento();
+
+            Assert.AreEqual(dataVencimentoValida, dataVencimentoBoleto, "Data vencimento boleto valida!");
+        }
     }
 }
