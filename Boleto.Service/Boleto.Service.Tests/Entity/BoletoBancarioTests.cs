@@ -70,6 +70,24 @@ namespace Boleto.Service.Tests.Entity
             Assert.AreEqual(dataVencimentoValida, dataVencimentoBoleto, "Data vencimento boleto valida!");
         }
 
-  
+
+
+        [TestMethod]
+        public void Valor_Boleto_Invalido()
+        {
+            string linhaDigitavelValida = "03399699255870000180185108001018874650000010000";
+
+            decimal valorBoletoInvalido = 555M;
+
+            var boletoBancario = new BoletoBancario(linhaDigitavelValida, string.Empty, _dataBaseBacen);
+
+            var codigoBarras = boletoBancario.CalculaCodigoBarras().Result;
+
+            decimal valorBoleto = boletoBancario.ValorBoleto();
+
+            Assert.AreNotEqual(valorBoletoInvalido, valorBoleto, "Valor boleto inválido!");
+        }
+
+
     }
 }
