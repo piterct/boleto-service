@@ -110,7 +110,7 @@ namespace Boleto.Service.Tests.Entity
 
             var digitoVerificador = boletoBancario.CalculaDigitoVerificadorCodigoBarras("39990351254521").Result;
 
-            Assert.AreNotEqual(digitoVerificador, 8, "Digito verificado codigo de barras valido!");
+            Assert.AreNotEqual(digitoVerificador, 8, "Digito verificado codigo de barras invalido!");
         }
 
     }
