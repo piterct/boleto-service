@@ -89,5 +89,17 @@ namespace Boleto.Service.Tests.Entity
         }
 
 
+        [TestMethod]
+        public void CalculaDigitoVerificadorCodigoBarras_Valido()
+        {
+            string linhaDigitavelValida = "03399699255870000180185108001018874650000010000";
+
+            var boletoBancario = new BoletoBancario(linhaDigitavelValida, string.Empty, _dataBaseBacen);
+
+           var digitoVerificador = boletoBancario.CalculaDigitoVerificadorCodigoBarras("399903512").Result;
+
+            Assert.AreEqual(digitoVerificador, 8, "Digito verificado codigo de barras valido!");
+        }
+
     }
 }
