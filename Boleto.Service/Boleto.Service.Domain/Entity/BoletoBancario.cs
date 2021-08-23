@@ -21,7 +21,7 @@ namespace Boleto.Service.Domain.Entity
         {
             this.CodigoBarras = Regex.Match(this.LinhaDigitavel, @"\d+").Value;
 
-            TamanhoCodigoBarras();
+            TamanhoLinhaDigitavel();
 
             this.CodigoBarras = this.CodigoBarras.Substring(0, 4)
                 + this.CodigoBarras.Substring(32, 15)
@@ -30,6 +30,19 @@ namespace Boleto.Service.Domain.Entity
                 + this.CodigoBarras.Substring(21, 10);
 
             return await Task.FromResult(CodigoBarras);
+        }
+
+        public string CalculaLinhaDigitavel()
+        {
+            this.LinhaDigitavel = Regex.Match(this.CodigoBarras, @"\d+").Value;
+
+            var campo1 = this.LinhaDigitavel.Substring(0, 4) + this.LinhaDigitavel.Substring(19, 1) + '.' + this.LinhaDigitavel.Substring(20, 4);
+            var campo2 = this.LinhaDigitavel.Substring(24, 5) + '.' + this.LinhaDigitavel.Substring(24 + 5, 5);
+            var campo3 = this.LinhaDigitavel.Substring(34, 5) + '.' + this.LinhaDigitavel.Substring(34 + 5, 5);
+            var campo4 = this.LinhaDigitavel.Substring(4, 1); // Digito verificador
+            var campo5 = this.LinhaDigitavel.Substring(5, 14); // Vencimento + Valor
+
+            return "";
         }
 
         public async ValueTask<bool> ValidaDigitoCodigodeBarras()
@@ -52,7 +65,7 @@ namespace Boleto.Service.Domain.Entity
             return Convert.ToDecimal(valor);
         }
 
-        private void TamanhoCodigoBarras()
+        private void TamanhoLinhaDigitavel()
         {
             if (this.CodigoBarras.Length < 47)
             {
@@ -60,7 +73,54 @@ namespace Boleto.Service.Domain.Entity
             }
         }
 
-        private int CalculaDigitoVerificador(string numero)
+        private bool ValidaLinhaCodigodeBarras()
+        {
+            if (this.CodigoBarras.Length != 44)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public async ValueTask<int> CalculaDigitoVerificadorCodigoBarras(string numero)
+        {
+            var soma = 0;
+            var peso = 2;
+            int contador = numero.Length - 1;
+
+            while (contador >= 0)
+            {
+                var multiplicacao = (Convert.ToInt32(numero.Substring(contador, 1)) * peso);
+
+                if (multiplicacao >= 10)
+                {
+                    multiplicacao = 1 + (multiplicacao - 10);
+                }
+
+                soma = soma + multiplicacao;
+
+                if(peso == 2)
+                {
+                    peso = 1;
+                }
+                else
+                {
+                    peso = 2;
+                }
+
+                contador = contador - 1;
+
+            }
+
+            var digito = 10 - (soma % 10);
+           
+            if (digito == 10) digito = 0;
+
+            return await Task.FromResult(digito);
+        }
+
+        public int CalculaDigitoVerificador(string numero)
         {
             var soma = 0;
             var peso = 2;
