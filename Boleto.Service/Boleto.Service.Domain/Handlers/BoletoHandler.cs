@@ -44,7 +44,7 @@ namespace Boleto.Service.Domain.Handlers
 
             var boletoBancario = new BoletoBancario(string.Empty, command.CodigoBarras,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
-            string codigoBarras = await boletoBancario.CalculaCodigoBarras();
+            string codigoBarras =  boletoBancario.CalculaLinhaDigitavel();
 
             if (!await boletoBancario.ValidaDigitoCodigodeBarras())
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito verificador inválido!", null,
