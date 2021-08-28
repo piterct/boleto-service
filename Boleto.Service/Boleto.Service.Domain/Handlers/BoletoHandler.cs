@@ -23,16 +23,20 @@ namespace Boleto.Service.Domain.Handlers
             if (command.Invalid)
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
-            var boletoBancario = new BoletoBancario(command.LinhaDigitavel.Replace(" ","").Replace(".",""), string.Empty,
+            var boletoBancario = new BoletoBancario(command.LinhaDigitavel.Replace(" ", "").Replace(".", ""), string.Empty,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
             string codigoBarras = await boletoBancario.CalculaCodigoBarras();
 
             if (!await boletoBancario.ValidaDigitoCodigodeBarras())
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito verificador inválido!", null,
-               StatusCodes.Status400BadRequest, command.Notifications);         
+               StatusCodes.Status400BadRequest, command.Notifications);
 
-            return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput { CodigoBarras = codigoBarras,
-                DataVencimento = boletoBancario.DataVencimento(), Valor = boletoBancario.ValorBoleto() },
+            return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput
+            {
+                CodigoBarras = codigoBarras,
+                DataVencimento = boletoBancario.DataVencimento(),
+                Valor = boletoBancario.ValorBoleto()
+            },
                 StatusCodes.Status200OK, command.Notifications);
         }
 
@@ -44,11 +48,15 @@ namespace Boleto.Service.Domain.Handlers
 
             var boletoBancario = new BoletoBancario(string.Empty, command.CodigoBarras,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
-            string codigoBarras =  boletoBancario.CalculaLinhaDigitavel();
 
-            if (!await boletoBancario.ValidaDigitoCodigodeBarras())
-                return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito verificador inválido!", null,
-               StatusCodes.Status400BadRequest, command.Notifications);
+            int digitoCodigoBarras = await boletoBancario.CalculaDigitoVerificadorCodigoBarras(command.CodigoBarras.Substring(0, 4) + command.CodigoBarras.Substring(5, 99));
+
+            if (digitoCodigoBarras != Convert.ToInt32(command.CodigoBarras.Substring(4, 1)))
+            {
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito do código de barras inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
+            }
+
+            string codigoBarras = boletoBancario.CalculaLinhaDigitavel();
 
             return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput
             {
