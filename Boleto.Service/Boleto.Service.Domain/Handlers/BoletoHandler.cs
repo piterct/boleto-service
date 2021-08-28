@@ -35,5 +35,28 @@ namespace Boleto.Service.Domain.Handlers
                 DataVencimento = boletoBancario.DataVencimento(), Valor = boletoBancario.ValorBoleto() },
                 StatusCodes.Status200OK, command.Notifications);
         }
+
+        public async ValueTask<CalculaCodigoBarrasBoletoCommandResult> Handle(CalculaLinhaDigitavelBoletoCommand command)
+        {
+            command.Validate();
+            if (command.Invalid)
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
+
+            var boletoBancario = new BoletoBancario(string.Empty, command.CodigoBarras,
+                new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
+            string codigoBarras = await boletoBancario.CalculaCodigoBarras();
+
+            if (!await boletoBancario.ValidaDigitoCodigodeBarras())
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito verificador inválido!", null,
+               StatusCodes.Status400BadRequest, command.Notifications);
+
+            return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput
+            {
+                CodigoBarras = codigoBarras,
+                DataVencimento = boletoBancario.DataVencimento(),
+                Valor = boletoBancario.ValorBoleto()
+            },
+                StatusCodes.Status200OK, command.Notifications);
+        }
     }
 }
