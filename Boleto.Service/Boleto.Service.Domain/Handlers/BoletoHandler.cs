@@ -40,11 +40,11 @@ namespace Boleto.Service.Domain.Handlers
                 StatusCodes.Status200OK, command.Notifications);
         }
 
-        public async ValueTask<CalculaCodigoBarrasBoletoCommandResult> Handle(CalculaLinhaDigitavelBoletoCommand command)
+        public async ValueTask<CalculaLinhaDigitavelBoletoCommandResult> Handle(CalculaLinhaDigitavelBoletoCommand command)
         {
             command.Validate();
             if (command.Invalid)
-                return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
+                return new CalculaLinhaDigitavelBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
             var boletoBancario = new BoletoBancario(string.Empty, command.CodigoBarras,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
@@ -53,14 +53,14 @@ namespace Boleto.Service.Domain.Handlers
 
             if (digitoCodigoBarras != Convert.ToInt32(command.CodigoBarras.Substring(4, 1)))
             {
-                return new CalculaCodigoBarrasBoletoCommandResult(false, "O digito verificador do código de barras está inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
+                return new CalculaLinhaDigitavelBoletoCommandResult(false, "O digito verificador do código de barras está inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
             }
 
             string codigoBarras = boletoBancario.CalculaLinhaDigitavel();
 
-            return new CalculaCodigoBarrasBoletoCommandResult(true, "Sucesso!", new CalculaCodigoBarrasBoletoCommandOutput
+            return new CalculaLinhaDigitavelBoletoCommandResult(true, "Sucesso!", new CalculaLinhaDigitavelBoletoCommandOutPut
             {
-                CodigoBarras = codigoBarras,
+                LinhaDigitavel = codigoBarras,
                 DataVencimento = boletoBancario.DataVencimento(),
                 Valor = boletoBancario.ValorBoleto()
             },
