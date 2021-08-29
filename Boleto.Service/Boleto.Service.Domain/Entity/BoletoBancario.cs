@@ -73,7 +73,7 @@ namespace Boleto.Service.Domain.Entity
             }
         }
 
-        public async ValueTask<int> CalculaDigitoVerificadorCodigoBarras(string numero)
+        public async ValueTask<int> CalculoPadraoCodigoDeBarras(string numero)
         {
             var soma = 0;
             var peso = 2;
