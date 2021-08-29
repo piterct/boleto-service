@@ -53,7 +53,7 @@ namespace Boleto.Service.Domain.Handlers
 
             if (digitoCodigoBarras != Convert.ToInt32(command.CodigoBarras.Substring(4, 1)))
             {
-                return new CalculaCodigoBarrasBoletoCommandResult(false, "Digito do código de barras inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
+                return new CalculaCodigoBarrasBoletoCommandResult(false, "O digito verificador do código de barras está inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
             }
 
             string codigoBarras = boletoBancario.CalculaLinhaDigitavel();
