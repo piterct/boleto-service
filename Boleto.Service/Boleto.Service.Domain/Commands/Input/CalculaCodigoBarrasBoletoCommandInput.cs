@@ -27,8 +27,8 @@ namespace Boleto.Service.Domain.Commands.Input
             AddNotifications(
            new Contract()
                .Requires()
-               .IsNotNullOrEmpty(LinhaDigitavel, "LinhaDigitavel", "LinhaDigitavel obrigatório!")
-                .IsGreaterThan(LinhaDigitavel == null ? 0 : LinhaDigitavel.Length, 36, "LinhaDigitavel", "Tamanho mínimo 36 caracteres!")
+               .IsNotNullOrEmpty(this.LinhaDigitavel, "LinhaDigitavel", "LinhaDigitavel obrigatório!")
+                .IsGreaterThan(this.LinhaDigitavel == null ? 0 : Regex.Match(this.LinhaDigitavel, @"\d+").Value.Length, 36, "LinhaDigitavel", "Tamanho mínimo 36 caracteres!")
                 .IsLowerThan(LinhaDigitavel == null ? 0 : Regex.Match(this.LinhaDigitavel, @"\d+").Value.Length, 48, "LinhaDigitavel", "Tamanho máximo 47 caracteres!")
                 );
         }
