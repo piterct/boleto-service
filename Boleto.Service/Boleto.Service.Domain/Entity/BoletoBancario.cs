@@ -73,16 +73,6 @@ namespace Boleto.Service.Domain.Entity
             }
         }
 
-        private bool ValidaLinhaCodigodeBarras()
-        {
-            if (this.CodigoBarras.Length != 44)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         public async ValueTask<int> CalculaDigitoVerificadorCodigoBarras(string numero)
         {
             var soma = 0;
