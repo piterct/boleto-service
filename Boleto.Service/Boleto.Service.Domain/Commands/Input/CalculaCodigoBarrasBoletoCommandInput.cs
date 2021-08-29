@@ -28,8 +28,8 @@ namespace Boleto.Service.Domain.Commands.Input
            new Contract()
                .Requires()
                .IsNotNullOrEmpty(this.LinhaDigitavel, "LinhaDigitavel", "LinhaDigitavel obrigatório!")
-                .IsGreaterThan(this.LinhaDigitavel == null ? 0 : Regex.Match(this.LinhaDigitavel, @"\d+").Value.Length, 36, "LinhaDigitavel", "Tamanho mínimo 36 caracteres!")
-                .IsLowerThan(LinhaDigitavel == null ? 0 : Regex.Match(this.LinhaDigitavel, @"\d+").Value.Length, 48, "LinhaDigitavel", "Tamanho máximo 47 caracteres!")
+                .IsGreaterThan(this.LinhaDigitavel == null ? 0 : Regex.Replace(this.LinhaDigitavel, @"[^\d]", "").Length, 36, "LinhaDigitavel", "Tamanho mínimo 36 caracteres!")
+                .IsLowerThan(LinhaDigitavel == null ? 0 : Regex.Replace(this.LinhaDigitavel, @"[^\d]", "").Length, 48, "LinhaDigitavel", "Tamanho máximo 47 caracteres!")
                 );
         }
     }

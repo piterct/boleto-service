@@ -19,7 +19,7 @@ namespace Boleto.Service.Domain.Entity
 
         public async ValueTask<string> CalculaCodigoBarras()
         {
-            this.CodigoBarras = Regex.Match(this.LinhaDigitavel, @"\d+").Value;
+            this.CodigoBarras = Regex.Replace(this.LinhaDigitavel, @"[^\d]", "");
 
             TamanhoLinhaDigitavel();
 
@@ -32,9 +32,9 @@ namespace Boleto.Service.Domain.Entity
             return await Task.FromResult(CodigoBarras);
         }
 
-        public string CalculaLinhaDigitavel()
+        public async ValueTask<string> CalculaLinhaDigitavel()
         {
-            this.LinhaDigitavel = Regex.Match(this.CodigoBarras, @"\d+").Value;
+            this.LinhaDigitavel = this.CodigoBarras;
 
             var campo1 = this.LinhaDigitavel.Substring(0, 4) + this.LinhaDigitavel.Substring(19, 1) + '.' + this.LinhaDigitavel.Substring(20, 4);
             var campo2 = this.LinhaDigitavel.Substring(24, 5) + '.' + this.LinhaDigitavel.Substring(24 + 5, 5);
@@ -42,7 +42,22 @@ namespace Boleto.Service.Domain.Entity
             var campo4 = this.LinhaDigitavel.Substring(4, 1); // Digito verificador
             var campo5 = this.LinhaDigitavel.Substring(5, 14); // Vencimento + Valor
 
-            return "";
+            if (Convert.ToInt64(campo5) == 0)
+            {
+                campo5 = "000";
+            }
+
+            this.LinhaDigitavel = campo1 + CalculoPadraoCodigoDeBarras(campo2).Result.ToString()
+                + ' ' +
+                campo2 + CalculoPadraoCodigoDeBarras(campo2).Result.ToString()
+                + ' ' +
+                campo3 + CalculoPadraoCodigoDeBarras(campo3).Result.ToString()
+                + ' ' +
+                campo4
+                + ' ' +
+                campo5;
+
+            return await Task.FromResult(this.LinhaDigitavel);
         }
 
         public async ValueTask<bool> ValidaDigitoCodigodeBarras()
@@ -75,6 +90,8 @@ namespace Boleto.Service.Domain.Entity
 
         public async ValueTask<int> CalculoPadraoCodigoDeBarras(string numero)
         {
+            numero = Regex.Match(numero, @"\d+").Value;
+
             var soma = 0;
             var peso = 2;
             int contador = numero.Length - 1;
@@ -90,7 +107,7 @@ namespace Boleto.Service.Domain.Entity
 
                 soma = soma + multiplicacao;
 
-                if(peso == 2)
+                if (peso == 2)
                 {
                     peso = 1;
                 }
@@ -104,7 +121,7 @@ namespace Boleto.Service.Domain.Entity
             }
 
             var digito = 10 - (soma % 10);
-           
+
             if (digito == 10) digito = 0;
 
             return await Task.FromResult(digito);

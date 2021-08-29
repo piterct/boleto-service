@@ -6,6 +6,7 @@ using Boleto.Service.Shared.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Boleto.Service.Domain.Handlers
@@ -23,7 +24,7 @@ namespace Boleto.Service.Domain.Handlers
             if (command.Invalid)
                 return new CalculaCodigoBarrasBoletoCommandResult(false, "Dados incorretos!", null, StatusCodes.Status400BadRequest, command.Notifications);
 
-            var boletoBancario = new BoletoBancario(command.LinhaDigitavel.Replace(" ", "").Replace(".", ""), string.Empty,
+            var boletoBancario = new BoletoBancario(Regex.Replace(command.LinhaDigitavel, @"[^\d]", ""), string.Empty,
                 new DateTime(Convert.ToInt32(_dataBaseBacenSettings.Ano), Convert.ToInt32(_dataBaseBacenSettings.Mes), Convert.ToInt32(_dataBaseBacenSettings.Dia)));
             string codigoBarras = await boletoBancario.CalculaCodigoBarras();
 
@@ -56,11 +57,9 @@ namespace Boleto.Service.Domain.Handlers
                 return new CalculaLinhaDigitavelBoletoCommandResult(false, "O digito verificador do código de barras está inválido!", null, StatusCodes.Status400BadRequest, command.Notifications);
             }
 
-            string codigoBarras = boletoBancario.CalculaLinhaDigitavel();
-
             return new CalculaLinhaDigitavelBoletoCommandResult(true, "Sucesso!", new CalculaLinhaDigitavelBoletoCommandOutPut
             {
-                LinhaDigitavel = codigoBarras,
+                LinhaDigitavel = await boletoBancario.CalculaLinhaDigitavel(),
                 DataVencimento = boletoBancario.DataVencimento(),
                 Valor = boletoBancario.ValorBoleto()
             },
