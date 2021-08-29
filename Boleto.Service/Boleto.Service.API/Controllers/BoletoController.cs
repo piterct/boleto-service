@@ -41,5 +41,27 @@ namespace Boleto.Service.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("calculaLinhaDigitavel")]
+        [ProducesResponseType(typeof(CalculaCodigoBarrasBoletoCommandResult), StatusCodes.Status200OK)]
+        public async ValueTask<IActionResult> CalculaLinhaDigitavel([FromServices] BoletoHandler handler, [FromBody] CalculaLinhaDigitavelBoletoCommandInput command)
+        {
+            try
+            {
+                var result = await handler.Handle(command);
+
+                return GetResult(result);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError("An exception has occurred at {dateTime}. " +
+                 "Exception message: {message}." +
+                 "Exception Trace: {trace}", DateTime.UtcNow, exception.Message, exception.StackTrace);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }

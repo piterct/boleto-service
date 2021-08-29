@@ -40,7 +40,7 @@ namespace Boleto.Service.Domain.Handlers
                 StatusCodes.Status200OK, command.Notifications);
         }
 
-        public async ValueTask<CalculaLinhaDigitavelBoletoCommandResult> Handle(CalculaLinhaDigitavelBoletoCommand command)
+        public async ValueTask<CalculaLinhaDigitavelBoletoCommandResult> Handle(CalculaLinhaDigitavelBoletoCommandInput command)
         {
             command.Validate();
             if (command.Invalid)
