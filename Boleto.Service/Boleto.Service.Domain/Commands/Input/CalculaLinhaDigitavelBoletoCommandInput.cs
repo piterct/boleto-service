@@ -6,6 +6,10 @@ namespace Boleto.Service.Domain.Commands.Input
 {
     public class CalculaLinhaDigitavelBoletoCommandInput : Notifiable
     {
+        public CalculaLinhaDigitavelBoletoCommandInput()
+        {
+
+        }
         public CalculaLinhaDigitavelBoletoCommandInput(string codigoBarras)
         {
             CodigoBarras = codigoBarras;
