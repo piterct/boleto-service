@@ -47,7 +47,7 @@ namespace Boleto.Service.Domain.Entity
                 campo5 = "000";
             }
 
-            this.LinhaDigitavel = campo1 + CalculoPadraoCodigoDeBarras(campo2).Result.ToString()
+            this.LinhaDigitavel = campo1 + CalculoPadraoCodigoDeBarras(campo1).Result.ToString()
                 + ' ' +
                 campo2 + CalculoPadraoCodigoDeBarras(campo2).Result.ToString()
                 + ' ' +
