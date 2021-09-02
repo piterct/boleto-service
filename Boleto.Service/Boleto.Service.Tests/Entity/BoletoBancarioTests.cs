@@ -128,6 +128,20 @@ namespace Boleto.Service.Tests.Entity
             Assert.AreEqual(digitoCodigoBarrasEnviado, digitoCodigoDeBarras, "Linha digitavel valida!");
         }
 
+        [TestMethod]
+        public void CodigoBarras_Invalido()
+        {
+            string codigoBarrasValido = "03818746500000000009699258700001808510800101";
+
+            var boletoBancario = new BoletoBancario(string.Empty, codigoBarrasValido, _dataBaseBacen);
+
+            int digitoCodigoBarrasEnviado = Convert.ToInt32(codigoBarrasValido.Substring(4, 1));
+
+            int digitoCodigoDeBarras = boletoBancario.CalculaDigitoVerificador(codigoBarrasValido.Substring(0, 4) + codigoBarrasValido.Substring(5, 39));
+
+            Assert.AreNotEqual(digitoCodigoBarrasEnviado, digitoCodigoDeBarras, "Linha digitavel invalida!");
+        }
+
 
     }
 }
