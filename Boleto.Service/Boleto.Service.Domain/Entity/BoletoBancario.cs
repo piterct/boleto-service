@@ -90,7 +90,7 @@ namespace Boleto.Service.Domain.Entity
 
         public async ValueTask<int> CalculoPadraoCodigoDeBarras(string numero)
         {
-            numero = Regex.Match(numero, @"\d+").Value;
+            numero = Regex.Replace(numero, @"[^\d]", "");
 
             var soma = 0;
             var peso = 2;
